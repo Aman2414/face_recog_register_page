@@ -14,6 +14,9 @@ function hello() {
         console.log("Confirm Password: " + confirmpwd.value);
         console.log(file);
     }
+
+
+
 };
 
 
