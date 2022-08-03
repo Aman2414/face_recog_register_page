@@ -32,6 +32,10 @@ body {
     margin-top: 15px;
 }
 
+.form-wrap #video{
+    margin-top: 10px;
+}
+
 .form-wrap .form-group label {
     color: #666;
 }
@@ -56,4 +60,33 @@ body {
 
 .form-wrap #submit:hover{
     background-color: gainsboro;
+}
+
+
+.form-wrap .form-group #choosenFile{
+    width: 55%;
+    display: inline;
+}
+
+.form-wrap #showcaptureImgBtn{
+    width: 30%;
+    padding: 5px;
+    margin-top: 10px;
+    background-color: whitesmoke;
+    cursor: pointer;
+    border: 1px solid black;
+
+}
+
+#snap{
+    width: 100%;
+    padding: 5px;
+    margin-top: 10px;
+    background-color: whitesmoke;
+    cursor: pointer;
+    border: 1px solid black;
+}
+
+#canvas{
+    margin-top: 20px;
 }

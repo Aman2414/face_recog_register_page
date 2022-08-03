@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register YourSelf</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
 </head>
 
 <body>
@@ -28,13 +27,186 @@
                     <input type="password" id="confirm-password">
                 </div>
                 <div class="form-group">
-                    <input accept="image/*" type="file" id="choosenFile" hidden="hidden" name="choosenFile">
+                    <input accept="image/*" type="file" id="choosenFile" name="choosenFile">
+                    OR
+                    <button id="showcaptureImgBtn">Camera</button>
                 </div>
-                <button id="sub" onclick="hello()" type="button">Register</button>
+                <p>Please Note that if both are selected then only capture image will be selected.</p>
+
+                <div hidden id="captureWeb">
+                    <video id="video" width=350 height=400 playsinline controls autoplay></video>
+
+                    <button id="snap">Capture</button>
+
+                    <canvas hidden id="canvas" width="350" height="400"></canvas>
+                </div>
+                <button id="sub" type="button">Register</button>
             </form>
         </div>
     </div>
 
 </body>
+
+<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-storage.js"></script>
+
+<script>
+
+    var faceimagesData = "https://firebasestorage.googleapis.com/v0/b/face-recog-e3890.appspot.com/o/"
+
+    var getImage = "https://firebasestorage.googleapis.com/v0/b/face-recog-e3890.appspot.com/o/{pass image name here to get image}?alt=media"
+
+    showcaptureImgBtn.addEventListener('click', function (event) {
+        event.preventDefault();
+        console.log("Show Capture Img Btn");
+        if (captureWeb.style.display == 'inline') {
+            captureWeb.style.display = 'none';
+        }
+        else {
+            captureWeb.style.display = 'inline';
+        }
+    });
+
+    let captureImage;
+    let submitBtn = document.getElementById('sub');
+    const firebaseConfig = {
+        apiKey: "AIzaSyAI4Az3-LbN5Yp98ATvYw6xIp37IRZfm-Q",
+        authDomain: "face-recog-e3890.firebaseapp.com",
+        databaseURL: "https://face-recog-e3890-default-rtdb.firebaseio.com",
+        projectId: "face-recog-e3890",
+        storageBucket: "face-recog-e3890.appspot.com",
+        messagingSenderId: "1032044332746",
+        appId: "1:1032044332746:web:ae6c3a60584aba2b941633",
+        measurementId: "G-J73S9ZE3TP"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    function validateImg(event) {
+        file = event.files[0];
+
+        if (file.type != "image/png" && file.type != "image/jpg" && file.type != "image/jpeg") {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+
+
+
+    function checkFields() {
+        if (username.value.length == 0) {
+            alert("Username is Empty!");
+            return false;
+        }
+        else if (password.value.length == 0) {
+            alert("Password is Empty!");
+            return false;
+        }
+        else if (confirm - password.value.length == 0) {
+            alert("Confirm Password is Empty!");
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    function uploadCaptureFile() {
+        let username = document.getElementById("username");
+        const ref = firebase.storage().ref();
+        ref.child(username.value + '*face_img').putString(captureImage.src, 'data_url').then(function (snapshot) {
+            console.log('Uploaded a data_url string!');
+            alert("Caputre Image Uploaded")
+        });
+    }
+
+    function uploadChoosenFile() {
+        let username = document.getElementById("username");
+        const ref = firebase.storage().ref();
+        const file = document.querySelector("#choosenFile").files[0];
+        const name = username.value + '*face_img';
+        const metadata = {
+            contentType: file.type
+        };
+        const task = ref.child(name).put(file, metadata);
+        task
+            .then(snapshot => snapshot.ref.getDownloadURL())
+            .then(url => {
+                console.log("Url " + url);
+                alert("Choosen File Uploaded");
+            })
+            .catch(console.error);
+    }
+
+    submitBtn.addEventListener("click", function (event) {
+        event.preventDefault();
+        console.log("Submit Called");
+        let username = document.getElementById("username");
+        let password = document.getElementById("password");
+        let confirmpwd = document.getElementById("confirm-password");
+        let selectedImage = document.getElementById("choosenFile");
+
+        if (checkFields()) {
+
+            if (captureImage != null) {
+                console.log("Capture Image Selected");
+                console.log("Uploading Capture Image");
+                uploadCaptureFile();
+            }
+            else if (selectedImage.files.length != 0) {
+                console.log("File is Selected");
+                if (validateImg(selectedImage)) {
+                    uploadChoosenFile();
+                }
+            }
+            else {
+                console.log("Either Select a file or capture a image");
+            }
+        }
+    });
+
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const snap = document.getElementById("snap");
+
+    const constraints = {
+        audio: false,
+        video: {
+            width: 350, height: 400
+        }
+    };
+
+    async function init() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia(constraints);
+            handleSuccess(stream);
+        } catch (e) {
+            console.log("WebCam Error");
+        }
+    }
+
+    function handleSuccess(stream) {
+        window.stream = stream;
+        video.srcObject = stream;
+    }
+
+    init();
+
+    // Draw image
+    var context = canvas.getContext('2d');
+    snap.addEventListener("click", function (event) {
+        //to stop console from disappearing
+        canvas.style.display = 'inline';
+        event.preventDefault();
+        context.drawImage(video, 0, 0, 350, 400);
+        captureImage = new Image();
+        captureImage.id = "face_img";
+        captureImage.src = canvas.toDataURL();
+    });
+
+
+</script>
 
 </html>
