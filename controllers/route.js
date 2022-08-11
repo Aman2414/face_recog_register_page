@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 const router = express.Router();
 const UserModel = mongoose.model("users");
-
+const conn = require('../database/db');
 router.get("/", (req, res) => {
     res.send("Welcome to the Server");
 });
@@ -15,18 +15,18 @@ router.get("/register", (req, res) => {
 })
 
 router.get("/getImageLink/:username", (req, res) => {
-    UserModel.findOne({}, { username: req.params.username }, (err, docs) => {
+    UserModel.findOne({ username: req.params.username }, (err, docs) => {
         if (err) {
             res.send("Error getting Image Link");
         }
         else {
-            res.send("Here" + docs);
+            res.send(docs["image_url"]);
         }
     });
 });
 
 router.get("/addUser/:username/:password", (req, res) => {
-    
+
     UserModel.create(
         {
             username: req.params.username,
