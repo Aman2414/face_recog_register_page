@@ -1,24 +1,10 @@
-var faceimagesData = "https://firebasestorage.googleapis.com/v0/b/face-recog-e3890.appspot.com/o/"
-var getImage = "https://firebasestorage.googleapis.com/v0/b/face-recog-e3890.appspot.com/o/{pass image name here to get image}?alt=media"
 let submitBtn = document.getElementById('sub');
 let username = document.getElementById("username");
 let password = document.getElementById("password");
 let confirmpwd = document.getElementById("confirm-password");
 let selectedImage = document.getElementById("choosenFile");
 let file;
-
-const firebaseConfig = {
-    apiKey: "AIzaSyAI4Az3-LbN5Yp98ATvYw6xIp37IRZfm-Q",
-    authDomain: "face-recog-e3890.firebaseapp.com",
-    databaseURL: "https://face-recog-e3890-default-rtdb.firebaseio.com",
-    projectId: "face-recog-e3890",
-    storageBucket: "face-recog-e3890.appspot.com",
-    messagingSenderId: "1032044332746",
-    appId: "1:1032044332746:web:ae6c3a60584aba2b941633",
-    measurementId: "G-J73S9ZE3TP"
-};
-
-firebase.initializeApp(firebaseConfig);
+let imageData;
 
 function validateImg(event) {
     if (event.files.length == 0) {
@@ -67,23 +53,6 @@ function validateConfirmPwd() {
     return password.value == confirmpwd.value ? true : false;
 }
 
-function uploadChoosenFile() {
-    let username = document.getElementById("username");
-    const ref = firebase.storage().ref();
-    const file = document.querySelector("#choosenFile").files[0];
-    const name = username.value + '';
-    const metadata = {
-        contentType: file.type
-    };
-    const task = ref.child(name).put(file, metadata);
-    task
-        .then(snapshot => snapshot.ref.getDownloadURL())
-        .then(url => {
-            alert("Data Uploaded");
-        })
-        .catch(console.error);
-}
-
 submitBtn.addEventListener("click", function (event) {
     event.preventDefault();
     console.log("Submit Called");
@@ -93,18 +62,35 @@ submitBtn.addEventListener("click", function (event) {
     selectedImage = document.getElementById("choosenFile");
 
     if (validate()) {
-        //upload image in firebase
-        uploadChoosenFile();
-        alert("Uploading User Details in MongoDB");
-        // uploading image link and user data in mongodb
-        uploadUserDetails(
-            `http://localhost:5000/addUser/${username.value}/${password.value}`
-        );
+        alert("Data is Valid So Uploading to mongodb");
+        uploadData();
     }
+
 });
 
-function uploadUserDetails(url) {
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", url, false);
-    xmlHttp.send(null);
+function uploadData() {
+    var reader = new FileReader();
+    console.log("Uploading Data");
+    console.log(selectedImage.files[0]);
+    reader.readAsDataURL(selectedImage.files[0]);
+    reader.onload = function () {
+        imageData = reader.result;
+        fetch("/registerUser", {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({
+                username: username.value,
+                password: password.value,
+                data: imageData,
+            })
+        }).then(function () {
+            console.log("User Registered Successfully");
+        }).catch(function (err) {
+            console.log("Error !", err)
+        });
+    };
+
+    reader.onerror = function (err) {
+        console.log("Cannot Read the file", err);
+    }
 }
