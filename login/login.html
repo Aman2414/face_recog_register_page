@@ -11,6 +11,7 @@
 
 <body>
     <div id="container">
+        <h1>Login</h1>
         <form method="post" action="/verifyUser">
             <label>Username</label>
             <input type="text" id="username" name="username" required>
@@ -18,9 +19,38 @@
             <label>Password</label>
             <input type="password" id="password" name="password" required>
 
-            <button id="loginBtn" type="submit">Login</button>
+            <input hidden type="text" id="img" name="img">
+
+            <div id="camera"></div>
+            <img id="im" src="">
+
+            <button onclick="capture_image()" id="loginBtn" type="submit">Login</button>
         </form>
     </div>
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"
+    integrity="sha512-dQIiHSl2hr3NWKKLycPndtpbh5iaHLo6MwrXm7F0FM5e+kL2U16oE9uIwPHUl6fQBeCthiEuV/rzP3MiAB8Vfw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+
+    Webcam.set({
+        width: 300,
+        height: 300,
+        image_format: 'jpeg',
+        jpeg_quality: 90
+    })
+
+    Webcam.attach("#camera")
+
+
+    function capture_image() {
+        Webcam.snap(function (data) {
+            let currentImage = data;
+            document.getElementById('img').value = data;
+        });
+    }
+
+</script>
 
 </html>

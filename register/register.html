@@ -7,35 +7,98 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register YourSelf</title>
     <link rel="stylesheet" href="style.css">
-    <script type="module" src="script.js"></script>
 </head>
 
 <body>
     <div id="container">
         <div class="form-wrap">
             <h1>Register</h1>
-            <form>
+            <form method="post" action="/registerUser">
                 <div class="form-group">
                     <label>UserName</label>
-                    <input type="text" id="username">
+                    <input type="text" id="username" name="username" required>
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" id="password">
+                    <input type="password" id="password" name="password" required>
                 </div>
                 <div class="form-group">
                     <label>Confirm Password</label>
-                    <input type="password" id="confirm-password">
+                    <input type="password" id="confirm-password" required>
                 </div>
                 <div class="form-group">
-                    <input accept="image/*" type="file" id="choosenFile" name="choosenFile">
+                    <input accept="image/*" type="file" id="choosenFile" required>
                 </div>
 
-                <button id="sub" type="submit">Register</button>
+                    <input hidden type="text" id="imgData" name="imgData" required>
+
+                <button id="sub" onclick="validate()" type="submit">Register</button>
+
             </form>
         </div>
     </div>
 
 </body>
+<script>
+    let selectedImage = document.getElementById("choosenFile");
+    let file;
+    let confirmpwd;
+
+    selectedImage.addEventListener('input', () => {
+        if (validateImg(selectedImage)) {
+            let imageData = document.getElementById("imgData");
+            var reader = new FileReader();
+            console.log(selectedImage.files[0]);
+            reader.readAsDataURL(selectedImage.files[0]);
+
+            reader.onload = function () {
+                imageData.value = reader.result;
+                console.log(imageData.value);
+            };
+
+            reader.onerror = function (err) {
+                console.log("Cannot Read the file", err);
+            }
+        }
+    });
+
+
+    function validateImg(event) {
+        if (event.files.length == 0) {
+            alert("File is Not Selected");
+        }
+        else {
+            file = event.files[0];
+            if (file.type != "image/png" && file.type != "image/jpg" && file.type != "image/jpeg") {
+                alert("File is Not Image");
+            }
+            else {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    async function validate() {
+        console.log("Validate Called");
+        selectedImage = document.getElementById("choosenFile");
+        confirmpwd = document.getElementById("confirm-password");
+
+        if (!validateImg(selectedImage)) {
+            return false;
+        }
+        else if (!validateConfirmPwd()) {
+            return false;
+        }
+        else {
+
+            return true;
+        }
+    }
+
+    function validateConfirmPwd() {
+        return password.value == confirmpwd.value ? true : false;
+    }
+</script>
 
 </html>

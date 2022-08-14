@@ -5,7 +5,8 @@ const path = require("path");
 const router = express.Router();
 const UserModel = mongoose.model("users");
 const conn = require('../database/db');
-const qs = require('querystring');
+const fetch = require('node-fetch');
+const axios = require('axios');
 
 router.get("/", (req, res) => {
     res.send("Welcome to the Server");
@@ -36,10 +37,30 @@ router.post("/verifyUser", (req, res) => {
             console.log("Error");
         }
         else {
-            // console.log("Docs in Verify User" + docs);
             if (docs != null) {
-                // res.sendStatus(200);
-                res.redirect("/welcomePage");
+                let image = docs["image_url"];
+                let testImage = req.body.img;
+                console.log("Calling Authenticate");
+
+                const data = {
+                    "image": image,
+                    "testImage": testImage,
+                };
+
+                //change this to heroku address
+                axios.post("https://face-recog-python-api.herokuapp.com/authenticate", data).then((response) => {
+                    console.log(response.data);
+                    if (response.data['result'] == true)
+                    {
+                        res.redirect("/welcomePage");
+                    }
+                    else{
+                        res.send("Face Did not Match");
+                    }
+
+                }).catch((err) => {
+                    res.send("Error" + err);
+                });
             }
             else {
                 res.send("Invalid User").status(300);
@@ -49,28 +70,24 @@ router.post("/verifyUser", (req, res) => {
 });
 
 router.get("/welcomePage", (req, res) => {
-    res.sendFile(path.join(__dirname.replace('controllers', "/login/login.html")));
-    res.status(200).send("Login Successfull");
+    res.send("Login Successfull");
 });
 
 
 router.post("/registerUser", (req, res) => {
-    console.log("Body Username ", req.body.username);
+    console.log("Body ", req.body);
 
     UserModel.create(
         {
             username: req.body.username,
             password: req.body.password,
-            image_url: req.body.data,
+            image_url: req.body.imgData,
         }).then(() => {
-            // res.send("User Added Successfully");
-            console.log("User Created Successfully");
+            res.redirect("/login");
         }).catch((err) => {
-            // res.send("Unable to Add");
-            console.log("Unable to create User", err);
+            res.send("Unable to create User", err);
         });
 
-    res.send("Add User Called");
 });
 
 
