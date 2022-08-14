@@ -22,7 +22,6 @@
             <input hidden type="text" id="img" name="img">
 
             <div id="camera"></div>
-            <img id="im" src="">
 
             <button onclick="capture_image()" id="loginBtn" type="submit">Login</button>
         </form>
@@ -38,11 +37,10 @@
         width: 300,
         height: 300,
         image_format: 'jpeg',
-        force_flash: true,
         jpeg_quality: 90
-    })
+    });
 
-    Webcam.attach("#camera")
+    Webcam.attach("#camera");
 
 
     function capture_image() {
