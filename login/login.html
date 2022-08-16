@@ -10,14 +10,21 @@
 </head>
 
 <body>
-    <div id="container">
+    <div class="center">
         <h1>Login</h1>
         <form method="post" action="/verifyUser">
-            <label>Username</label>
-            <input type="text" id="username" name="username" required>
+            <div class="txt_field">
+                <input type="text" id="username" name="username" required>
+                <span></span>
+                <label>Username</label>
+            </div>
 
-            <label>Password</label>
-            <input type="password" id="password" name="password" required>
+            <div class="txt_field">
+
+                <input type="password" id="password" name="password" required>
+                <span></span>
+                <label>Password</label>
+            </div>
 
             <input hidden type="text" id="img" name="img">
 
@@ -34,7 +41,7 @@
 <script>
 
     Webcam.set({
-        width: 300,
+        width: 330,
         height: 300,
         image_format: 'jpeg',
         jpeg_quality: 90

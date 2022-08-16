@@ -63,7 +63,7 @@ router.post("/verifyUser", (req, res) => {
                 });
             }
             else {
-                res.send("Invalid User").status(300);
+                res.send("Invalid Username Or Password");
             }
         }
     });
