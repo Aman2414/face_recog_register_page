@@ -1,81 +1,42 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+.body {
+  background: linear-gradient(to bottom left, #e738f5, #62d9df);
 }
 
-body {
-    height: 100%;
+h1 {
+  color: white;
+  text-align: center;
 }
 
-#app {
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    background: url(./images/bg/bg.jpg) no-repeat;
-    background-size: cover;
-    opacity: 0.8;
-    z-index: -1;
+.card-title {
+  font-size: 3rem;
 }
 
-main {
-    height: 100%;
+.voting-btn {
+  margin-top: 10px;
+  background: linear-gradient(
+    to bottom left,
+    rgb(250, 92, 92),
+    rgb(243, 184, 74)
+  );
+  padding: 8px 40px;
+  border: none;
+  color: white;
 }
 
-.cards {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    padding: 5rem 0;
+.progress {
+  margin-top: 20px;
 }
 
-.card {
-    width: 25rem;
-    border: 2px solid black;
-    overflow: hidden;
-    box-shadow: 10px 10px 20px black;
-    transition: all 0.5 ease;
-    cursor: pointer;
-    margin-left: 10px;
+.progress_bar {
+  background-image: linear-gradient(
+    to bottom left,
+    rgb(250, 92, 92),
+    rgb(243, 184, 74)
+  );
 }
 
-.card-image {
-    width: 25rem;
-    height: 20rem;
-    object-fit: cover;
-    vertical-align: bottom;
-}
-
-.card-info {
-    display: flex;
-    justify-content: space-evenly;
-    background-color: whitesmoke;
-    color: black;
-    padding: 2rem 0;
-}
-
-.candidate-name {
-    font-size: 1rem;
-    font-weight: 700;
-}
-
-.candidate-party {
-    font-size: 1rem;
-    font-weight: 600;
-}
-
-.card-btn {
-    width: 100%;
-    border: none;
-    outline: none;
-    font-size: 1.5rem;
-    font-weight: 700;
-    padding: 1.5rem 0;
-    color: white;
-    cursor: pointer;
-    border-top: 2px solid black;
-    transition: all 0.5s ease;
-    background: red;
+@media (max-width: 991px) {
+  .trump-card {
+    margin-bottom: 20px;
+  }
 }

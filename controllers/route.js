@@ -4,9 +4,11 @@ const mongoose = require("mongoose");
 const path = require("path");
 const router = express.Router();
 const UserModel = mongoose.model("users");
+const VoteModel = mongoose.model("votes");
 const conn = require("../database/db");
 const fetch = require("node-fetch");
 const axios = require("axios");
+let currentUser;
 
 router.get("/", (req, res) => {
   res.send("Welcome to the Server");
@@ -24,12 +26,6 @@ router.get("/login", (req, res) => {
   );
 });
 
-router.get("/voting", (req, res) => {
-  res.sendFile(
-    path.join(__dirname.replace("controllers", "/voting/voting.html"))
-  );
-});
-
 router.get("/getImageLink/:username", (req, res) => {
   UserModel.findOne({ username: req.params.username }, (err, docs) => {
     if (err) {
@@ -40,61 +36,175 @@ router.get("/getImageLink/:username", (req, res) => {
   });
 });
 
-router.post("/verifyUser", (req, res) => {
+router.post("/addvote/:name", (req, res) => {
+  let totalVotes;
+  console.log("Name:", req.params.name);
+  let Name = req.params.name;
+  VoteModel.findOne({ name: Name }, (err, result) => {
+    if (err) {
+      res.sendStatus(500);
+    } else if (result == null) {
+      res.sendStatus(404);
+    } else {
+      totalVotes = result["votes"];
+      totalVotes = parseInt(totalVotes) + 1;
+      console.log(`Total Votes after adding: ${totalVotes}`);
+      console.log("CurrentUser", currentUser);
+      VoteModel.findOneAndUpdate(
+        { name: Name },
+        { votes: totalVotes },
+        null,
+        (err, result) => {
+          if (err) {
+            console.log("Unable to add vote");
+            res.sendStatus(502);
+          } else {
+            UserModel.findOneAndUpdate(
+              { username: currentUser },
+              { voted: "yes" },
+              null,
+              (err, result) => {
+                if (err) {
+                  res.sendStatus(500);
+                } else {
+                  console.log("Updated To yes");
+                }
+              }
+            );
+            res.sendStatus(200);
+          }
+        }
+      );
+    }
+  });
+});
+
+router.post("/verifyCam", (req, res) => {
+  UserModel.findOne({ username: currentUser }, (err, result) => {
+    if (err) {
+      console.log("Error so sending code 500", err);
+      res.sendStatus(500);
+    } else if (result != null) {
+      let image = result["image_url"];
+      let testImage = req.body.img;
+      console.log("Authenticating");
+      const data = {
+        image: image,
+        testImage: testImage,
+      };
+      axios
+        .post("https://face-recog-python-api.herokuapp.com/authenticate", data)
+        .then((response) => {
+          console.log(response.data);
+          if (response.data["result"] == true) {
+            UserModel.findOne(
+              { username: req.body.username, voted: "yes" },
+              (err, result) => {
+                if (err) {
+                  res.sendStatus(500);
+                } else if (result != null) {
+                  res.sendStatus(403);
+                } else {
+                  UserModel.findOneAndUpdate(
+                    { username: req.body.username },
+                    { voted: "yes" },
+                    (err, result) => {
+                      if (err) {
+                        res.sendStatus(500);
+                      } else {
+                        res.sendStatus(200);
+                      }
+                    }
+                  );
+                }
+              }
+            );
+          } else {
+            res.sendStatus(404);
+          }
+        })
+        .catch((err) => {
+          res.sendStatus(500);
+        });
+    } else {
+      res.send();
+      res.sendStatus(406);
+    }
+  });
+});
+
+router.get("/voting", (req, res) => {
+  if (currentUser == null) {
+    res.redirect("/login");
+  } else {
+    res.sendFile(
+      path.join(__dirname.replace("controllers", "/voting/voting.html"))
+    );
+  }
+});
+
+router.get("/faceVerify", (req, res) => {
+  if (currentUser == null) {
+    console.log("No current User");
+    res.redirect("/login");
+  } else {
+    res.sendFile(path.join(__dirname.replace("controllers", "/cam/cam.html")));
+  }
+});
+
+router.get("/forgotPass", (req, res) => {
+  res.send("Welcome to forgot password page");
+});
+
+router.post("/verifyLogin", (req, res) => {
+  console.log("Verifying Login");
+
+  console.log("Username: " + req.body.username);
+  console.log("Password: " + req.body.password);
+
   UserModel.findOne(
     { username: req.body.username, password: req.body.password },
     (err, docs) => {
       if (err) {
-        console.log("Error");
+        res.sendStatus(404);
+      } else if (docs != null) {
+        UserModel.findOne(
+          { username: req.body.username, voted: "yes" },
+          (err, result) => {
+            if (err) {
+              res.sendStatus(500);
+            } else if (result != null) {
+              res.sendStatus(406);
+            } else {
+              currentUser = req.body.username;
+              res.sendStatus(200);
+            }
+          }
+        );
       } else {
-        if (docs != null) {
-          let image = docs["image_url"];
-          let testImage = req.body.img;
-          console.log("Calling Authenticate");
-
-          const data = {
-            image: image,
-            testImage: testImage,
-          };
-
-          //change this to heroku address
-          axios
-            .post(
-              "https://face-recog-python-api.herokuapp.com/authenticate",
-              data
-            )
-            .then((response) => {
-              console.log(response.data);
-              if (response.data["result"] == true) {
-                res.redirect("/voting");
-              } else {
-                res.send("Face Did not Match");
-              }
-            })
-            .catch((err) => {
-              res.send("Error" + err);
-            });
-        } else {
-          res.send("Invalid Username Or Password");
-        }
+        res.sendStatus(403);
       }
     }
   );
 });
 
 router.post("/registerUser", (req, res) => {
-  console.log("Body ", req.body);
+  console.log("Username ", req.body.username);
+  console.log("Password ", req.body.password);
 
   UserModel.create({
     username: req.body.username,
     password: req.body.password,
     image_url: req.body.imgData,
+    voted: "no",
   })
-    .then(() => {
-      res.redirect("/login");
+    .then((response) => {
+      console.log("Sending");
+      res.sendStatus(201);
     })
     .catch((err) => {
-      res.send("Unable to create User", err);
+      console.log("Error");
+      res.send("Unable to create User");
     });
 });
 

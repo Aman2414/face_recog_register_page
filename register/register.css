@@ -96,12 +96,11 @@ label {
 
 .forgot a {
   outline: none;
-  /* color: #2691d9; */
   color: black;
   text-decoration: none;
 }
 
-#loginBtn[type="submit"] {
+#registerBtn[type="submit"] {
   width: 100%;
   height: 45px;
   border: 1px solid;
@@ -115,6 +114,41 @@ label {
   margin: 20px 0;
 }
 
-#loginBtn[type="submit"]:hover {
+#registerBtn[type="submit"]:hover {
+  transition: 0.5s;
+}
+
+.signUp {
+  text-align: center;
+  margin: 15px 0;
+}
+
+.signUp a {
+  text-decoration: none;
+  color: black;
+}
+
+.upload-box {
+  font-size: 18px;
+  font-weight: 400;
+  cursor: pointer;
+  background: white;
+  border-radius: 0px;
+  width: 320px;
+  outline: none;
+}
+
+::-webkit-file-upload-button {
+  color: white;
+  background: #2691d9;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+}
+
+::-webkit-file-upload-button:hover {
+  background: linear-gradient(to right, #e738f5, #62d9df);
   transition: 0.5s;
 }

@@ -1,62 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="login.css">
-</head>
+    <link rel="stylesheet" href="login.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
 
-<body>
+  <body>
     <div class="center">
-        <h1>Login</h1>
-        <form method="post" action="/verifyUser">
-            <div class="txt_field">
-                <input type="text" id="username" name="username" required>
-                <span></span>
-                <label>Username</label>
-            </div>
+      <h1>Login</h1>
+      <label>Username</label>
+      <div class="txt_field">
+        <span>
+          <i class="fa-solid fa-user"></i>
+        </span>
+        <input
+          type="text"
+          placeholder="Enter Your Username"
+          id="username"
+          name="username"
+          required
+        />
+      </div>
 
-            <div class="txt_field">
+      <label>Password</label>
+      <div class="txt_field">
+        <span>
+          <i class="fa-solid fa-lock"></i>
+        </span>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Enter Your Password"
+          required
+        />
+      </div>
+      <div class="forgot">
+        <a href="/forgotPass">Forgot Password?</a>
+      </div>
 
-                <input type="password" id="password" name="password" required>
-                <span></span>
-                <label>Password</label>
-            </div>
-
-            <input hidden type="text" id="img" name="img">
-
-            <div id="camera"></div>
-
-            <button onclick="capture_image()" id="loginBtn" type="submit">Login</button>
-        </form>
+      <button id="loginBtn" type="submit">Login</button>
     </div>
-</body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"
-    integrity="sha512-dQIiHSl2hr3NWKKLycPndtpbh5iaHLo6MwrXm7F0FM5e+kL2U16oE9uIwPHUl6fQBeCthiEuV/rzP3MiAB8Vfw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-<script>
-
-    Webcam.set({
-        width: 330,
-        height: 300,
-        image_format: 'jpeg',
-        jpeg_quality: 90
-    });
-
-    Webcam.attach("#camera");
-
-
-    function capture_image() {
-        Webcam.snap(function (data) {
-            let currentImage = data;
-            document.getElementById('img').value = data;
-        });
-    }
-
-</script>
-
+    <script src="login.js"></script>
+  </body>
 </html>

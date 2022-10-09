@@ -1,53 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="voting.css">
-</head>
+    <link rel="stylesheet" href="voting.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+      crossorigin="anonymous"
+    />
+  </head>
 
-<body>
-    <div id="app">
-        <main>
-            <div class="cards">
-                <!-- First Candidate -->
-                <div class="card">
-                    <img class="card-image" src="images/candidate/trump.jpg" alt="">
+  <body class="body">
+    <!-- <h1>Who will be the president of USA?</h1> -->
 
-                    <div class="card-info">
-                        <span class="candidate-name">
-                            Donald trump
-                        </span>
-                        <span class="candidate-party">
-                            Republican Party
-                        </span>
-                    </div>
-                    <button class="card-btn">VOTE</button>
-                </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 col-md-12 text-center">
+          <div class="card trump-card">
+            <img
+              class="card-img-top"
+              src="images/candidate/trump.jpg"
+              height="600"
+              alt="Card image cap"
+            />
+            <div class="card-body">
+              <h5 class="card-title">Cory Booker</h5>
+              <button class="voting-btn trump-vbtn">VOTE</button>
 
-                <!-- Second Candidate -->
-                <div class="card">
-                    <img class="card-image" src="images/candidate/joe.jpg" alt="">
-
-                    <div class="card-info">
-                        <span class="candidate-name">
-                            Donald trump
-                        </span>
-                        <span class="candidate-party">
-                            Republican Party
-                        </span>
-                    </div>
-                    <button class="card-btn">VOTE</button>
-                </div>
+              <div class="progress" style="height: 14px">
+                <div class="progress_bar" style="width: 20%"></div>
+              </div>
+              
             </div>
-        </main>
+          </div>
+        </div>
 
+        <div class="col-lg-6 col-md-12 text-center">
+          <div class="card trump-card">
+            <img
+              class="card-img-top"
+              src="images/candidate/joe.jpg"
+              height="600"
+              alt="Card image cap"
+            />
+            <div class="card-body">
+              <h5 class="card-title">Joe Biden</h5>
+              <button class="voting-btn joe-vbtn">VOTE</button>
 
+              <div class="progress" style="height: 14px">
+                <div class="progress_bar" style="width: 20%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-</body>
-
+    <script src="voting.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+      integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"
+      integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>

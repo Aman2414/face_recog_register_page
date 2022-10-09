@@ -1,104 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Register YourSelf</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+    <link rel="stylesheet" href="register.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
 
-<body>
-    <div id="container">
-        <div class="form-wrap">
-            <h1>Register</h1>
-            <form method="post" action="/registerUser">
-                <div class="form-group">
-                    <label>UserName</label>
-                    <input type="text" id="username" name="username" required>
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                <div class="form-group">
-                    <label>Confirm Password</label>
-                    <input type="password" id="confirm-password" required>
-                </div>
-                <div class="form-group">
-                    <input accept="image/*" type="file" id="choosenFile" required>
-                </div>
+  <body>
+    <div class="center">
+      <h1>Register</h1>
+      <label>Username</label>
+      <div class="txt_field">
+        <span>
+          <i class="fa-solid fa-user"></i>
+        </span>
+        <input
+          type="text"
+          placeholder="Enter Your Username"
+          id="username"
+          name="username"
+          required
+        />
+      </div>
 
-                    <input hidden type="text" id="imgData" name="imgData" required>
+      <label>Password</label>
+      <div class="txt_field">
+        <span>
+          <i class="fa-solid fa-lock"></i>
+        </span>
+        <input
+          type="password"
+          placeholder="Enter Your Password"
+          id="password"
+          name="password"
+          required
+        />
+      </div>
 
-                <button id="sub" onclick="validate()" type="submit">Register</button>
+      <label>Confirm Password</label>
+      <div class="txt_field">
+        <span>
+          <i class="fa-solid fa-lock"></i>
+        </span>
+        <input
+          type="password"
+          placeholder="Confirm Your Password"
+          id="confirm-password"
+          name="password"
+          required
+        />
+      </div>
 
-            </form>
-        </div>
+      <input hidden type="text" id="imgData" name="imgData" required />
+
+      <div class="container">
+        <input
+          class="upload-box"
+          accept="image/*"
+          type="file"
+          id="choosenFile"
+          required
+        />
+      </div>
+
+      <button id="registerBtn" type="submit">Register</button>
     </div>
-
-</body>
-<script>
-    let selectedImage = document.getElementById("choosenFile");
-    let file;
-    let confirmpwd;
-
-    selectedImage.addEventListener('input', () => {
-        if (validateImg(selectedImage)) {
-            let imageData = document.getElementById("imgData");
-            var reader = new FileReader();
-            console.log(selectedImage.files[0]);
-            reader.readAsDataURL(selectedImage.files[0]);
-
-            reader.onload = function () {
-                imageData.value = reader.result;
-                console.log(imageData.value);
-            };
-
-            reader.onerror = function (err) {
-                console.log("Cannot Read the file", err);
-            }
-        }
-    });
-
-
-    function validateImg(event) {
-        if (event.files.length == 0) {
-            alert("File is Not Selected");
-        }
-        else {
-            file = event.files[0];
-            if (file.type != "image/png" && file.type != "image/jpg" && file.type != "image/jpeg") {
-                alert("File is Not Image");
-            }
-            else {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    async function validate() {
-        console.log("Validate Called");
-        selectedImage = document.getElementById("choosenFile");
-        confirmpwd = document.getElementById("confirm-password");
-
-        if (!validateImg(selectedImage)) {
-            return false;
-        }
-        else if (!validateConfirmPwd()) {
-            return false;
-        }
-        else {
-
-            return true;
-        }
-    }
-
-    function validateConfirmPwd() {
-        return password.value == confirmpwd.value ? true : false;
-    }
-</script>
-
+    <script src="register.js"></script>
+  </body>
 </html>
