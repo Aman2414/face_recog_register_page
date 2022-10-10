@@ -1,29 +1,98 @@
-const { resolveSoa } = require("dns");
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
 const router = express.Router();
 const UserModel = mongoose.model("users");
 const VoteModel = mongoose.model("votes");
+const AdminModel = mongoose.model("admins");
 const conn = require("../database/db");
 const fetch = require("node-fetch");
 const axios = require("axios");
 let currentUser;
-
+let admin;
 router.get("/", (req, res) => {
   res.send("Welcome to the Server");
 });
 
+router.get("/totalVotes/:name", (req, res) => {
+  if (admin == null) {
+    res.sendStatus(403);
+  } else {
+    VoteModel.findOne({ name: req.params.name }, (err, result) => {
+      if (err) {
+        res.sendStatus(500);
+      } else if (result != null) {
+        let totalvotes = result["votes"];
+        res.status(200).send({ votes: totalvotes });
+      } else {
+        res.sendStatus(404);
+      }
+    });
+  }
+});
+
 router.get("/register", (req, res) => {
-  res.sendFile(
-    path.join(__dirname.replace("controllers", "/register/register.html"))
-  );
+  if (admin == null) {
+    res.redirect("/admin");
+  } else {
+    res.sendFile(
+      path.join(__dirname.replace("controllers", "/register/register.html"))
+    );
+  }
+});
+
+router.get("/adminVoting", (req, res) => {
+  if (admin == null) {
+    res.redirect("/admin");
+  } else {
+    res.sendFile(
+      path.join(
+        __dirname.replace("controllers", "/adminVoting/adminVoting.html")
+      )
+    );
+  }
 });
 
 router.get("/login", (req, res) => {
   res.sendFile(
     path.join(__dirname.replace("controllers", "/login/login.html"))
   );
+});
+
+router.get("/adminPage", (req, res) => {
+  if (admin != null) {
+    res.sendFile(
+      path.join(__dirname.replace("controllers", "/adminDash/adminDash.html"))
+    );
+  } else {
+    res.redirect("/admin");
+  }
+});
+
+router.get("/admin", (req, res) => {
+  res.sendFile(
+    path.join(__dirname.replace("controllers", "/admin/admin.html"))
+  );
+});
+
+router.post("/verifyAdmin", (req, res) => {
+  console.log("Admin Username " + req.body.username);
+  console.log("Password " + req.body.password);
+
+  AdminModel.findOne(
+    { username: req.body.username, password: req.body.password },
+    (err, result) => {
+      if (err) {
+        res.sendStatus(500);
+      } else if (result != null) {
+        admin = req.body.username;
+        res.sendStatus(200);
+      } else {
+        res.sendStatus(404);
+      }
+    }
+  );
+  // res.sendStatus(200);
 });
 
 router.get("/getImageLink/:username", (req, res) => {

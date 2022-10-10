@@ -5,11 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="cam.css" />
   </head>
   <body>
-    <div id="camera"></div>
-    <input hidden type="text" id="img" name="img" />
-    <button id="verifyBtn" type="submit">Verify</button>
+    <div id="cam" class="center">
+      <div id="camera"></div>
+      <input hidden type="text" id="img" name="img" />
+      <button id="verifyBtn" type="submit">Verify</button>
+    </div>
+
+    <div id="loading" class="load">
+      <div class="ring"></div>
+      <span>Verifying...</span>
+    </div>
 
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"
@@ -23,9 +31,21 @@
       let image = document.getElementById("img");
       let iData;
 
+      function isVerifying() {
+        document.getElementById("cam").style.display = "none";
+        document.getElementById("loading").style.display = "flex";
+        document.body.style.background = "black";
+      }
+
+      function isNotVerifying() {
+        document.getElementById("cam").style.display = "block";
+        document.getElementById("loading").style.display = "none";
+        document.body.style.background = "black";
+      }
+
       verifyBtn.addEventListener("click", () => {
         if (capture_image()) {
-          alert("Verifying");
+          isVerifying();
           fetch("http://localhost:5000/verifyCam", {
             method: "POST",
             headers: {
@@ -39,14 +59,16 @@
               let code = response.status;
               if (code === 500) {
                 alert("Server Error in getting user detailssss");
-              } else if (code === 403) {
-                alert("You already have voted.Thank You!");
+                isNotVerifying();
               } else if (code === 200) {
                 //redirect to voting page
+                alert("Face Recognition Successful");
                 window.location.href = "http://localhost:5000/voting";
               } else if (code === 404) {
-                alert("Face Did not Match");
+                isNotVerifying();
+                alert("Face Recognition Unsuccessful");
               } else if (code === 406) {
+                isNotVerifying();
                 alert("No user found!");
               }
             })
@@ -57,8 +79,8 @@
       });
 
       Webcam.set({
-        width: 330,
-        height: 300,
+        width: 400,
+        height: 400,
         image_format: "jpeg",
         jpeg_quality: 90,
       });

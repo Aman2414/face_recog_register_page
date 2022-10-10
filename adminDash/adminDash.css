@@ -1,0 +1,36 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to bottom left, #e738f5, #62d9df);
+  height: 100vh;
+  overflow: hidden;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 100vh;
+}
+
+.center button {
+  padding: 20px 55px;
+  margin: 0px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.center button:hover {
+  background: transparent;
+  transition: 0.5s;
+  color: white;
+}

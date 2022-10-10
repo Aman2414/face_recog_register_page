@@ -14,3 +14,4 @@ mongoose
 
 require("../model/user_model.js");
 require("../model/vote_model.js");
+require("../model/admin_model.js");

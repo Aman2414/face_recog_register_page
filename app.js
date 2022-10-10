@@ -11,6 +11,9 @@ app.use(express.static("register"));
 app.use(express.static("login"));
 app.use(express.static("voting"));
 app.use(express.static("cam"));
+app.use(express.static("admin"));
+app.use(express.static("adminDash"));
+app.use(express.static("adminVoting"));
 app.use("/", routes);
 
 app.listen(port, () => {

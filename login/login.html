@@ -16,7 +16,12 @@
   </head>
 
   <body>
-    <div class="center">
+    <div id="loading" class="load">
+      <div class="ring"></div>
+      <span class="loadingSpan">Verifying...</span>
+    </div>
+
+    <div id="main" class="center">
       <h1>Login</h1>
       <label>Username</label>
       <div class="txt_field">
@@ -45,9 +50,9 @@
           required
         />
       </div>
-      <div class="forgot">
+      <!-- <div class="forgot">
         <a href="/forgotPass">Forgot Password?</a>
-      </div>
+      </div> -->
 
       <button id="loginBtn" type="submit">Login</button>
     </div>

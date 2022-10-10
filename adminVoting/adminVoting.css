@@ -12,16 +12,12 @@ h1 {
   font-size: 2rem;
 }
 
-.voting-btn {
-  margin-top: 10px;
-  background: linear-gradient(
-    to bottom left,
-    rgb(250, 92, 92),
-    rgb(243, 184, 74)
-  );
-  padding: 8px 40px;
-  border: none;
-  color: white;
+#pbarTrump {
+  width: 0%;
+}
+
+#pbarJoe {
+  width: 0%;
 }
 
 .progress {
@@ -34,10 +30,15 @@ h1 {
     rgb(250, 92, 92),
     rgb(243, 184, 74)
   );
+  color: white;
 }
 
-@media (max-width: 991px) {
+@media (min-width: 1160px) {
   .trump-card {
-    margin-bottom: 20px;
+    margin-left: 5rem;
+  }
+
+  .joe-card {
+    margin-right: 5rem;
   }
 }
