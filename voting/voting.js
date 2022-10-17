@@ -25,7 +25,7 @@ function addVote(name) {
         alert("Server Error in Updating total votes");
       } else if (code === 403) {
         alert("You have already Voted");
-        window.location.href = "http://localhost:5000/login";
+        window.location.href = "http://localhost:5000";
       } else if (code === 200) {
         alert("You have Successfully Voted");
         window.location.href = "http://localhost:5000/login";

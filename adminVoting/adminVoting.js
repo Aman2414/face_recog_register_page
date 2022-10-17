@@ -94,6 +94,6 @@ function setVotes() {
   }
   if (jVotes !== 0) {
     pbarJoe.innerText = `${jVotes}%`;
-    totalVotesJoe.innerText = `Votes Got: ${jVotes}/${tVotes}`;
+    totalVotesJoe.innerText = `Votes Got: ${joeVotes}/${tVotes}`;
   }
 }
