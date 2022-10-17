@@ -1,0 +1,64 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@700&family=Poppins:wght@400;500;600&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to bottom left, #e738f5, #62d9df);
+  height: 100vh;
+  overflow: hidden;
+}
+
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.05);
+}
+
+.center h1 {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.center {
+  padding: 0 40px;
+  box-sizing: border-box;
+}
+
+label {
+  font-weight: 500;
+}
+
+button {
+  width: 100%;
+  height: 50px;
+  border: 1px solid;
+  background: linear-gradient(to left, #e738f5, #62d9df);
+  border-radius: 25px;
+  font-size: 18px;
+  color: #e9f4fb;
+  font-weight: 700;
+  cursor: pointer;
+  outline: none;
+  margin: 10px 0;
+}
+
+button:hover {
+  background: black;
+  transition: 1s;
+}
+
+#adminLogin{
+  margin-bottom: 30px;
+}

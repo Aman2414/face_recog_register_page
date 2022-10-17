@@ -10,8 +10,11 @@ const fetch = require("node-fetch");
 const axios = require("axios");
 let currentUser;
 let admin;
+
 router.get("/", (req, res) => {
-  res.send("Welcome to the Server");
+  res.sendFile(
+    path.join(__dirname.replace("controllers", "/home/home.html"))
+  );
 });
 
 router.get("/totalVotes/:name", (req, res) => {
@@ -255,6 +258,36 @@ router.post("/verifyLogin", (req, res) => {
       }
     }
   );
+});
+
+router.get("/clearVotes", (req, res) => {
+  if (admin == null) {
+    res.sendStatus(403);
+  } else {
+    VoteModel.findOneAndUpdate(
+      { name: "trump" },
+      { votes: 0 },
+      null,
+      (err, result) => {
+        if (err) {
+          res.sendStatus(500);
+        } else {
+          VoteModel.findOneAndUpdate(
+            { name: "joe" },
+            { votes: 0 },
+            null,
+            (err, result) => {
+              if (err) {
+                res.sendStatus(501);
+              } else {
+                res.sendStatus(200);
+              }
+            }
+          );
+        }
+      }
+    );
+  }
 });
 
 router.post("/registerUser", (req, res) => {

@@ -16,7 +16,6 @@
 
   <body class="body">
     <div class="container">
-      <!-- ms-lg-5 me-lg-5 -->
       <div class="row mt-lg-5">
         <div class="col-md-6 mt-5 col-sm-12 text-center">
           <div class="card trump-card me-lg-5">
@@ -27,11 +26,11 @@
               alt="Card image cap"
             />
             <div class="card-body">
-              <h5 class="card-title">Trump</h5>
+              <h5 class="card-title">Donald Trump</h5>
               <div class="progress" style="height: 18px">
                 <div id="pbarTrump" class="progress_bar"></div>
               </div>
-              <div id="totalVotes"></div>
+              <div class="votesText" id="totalVotesTrump"></div>
             </div>
           </div>
         </div>
@@ -50,10 +49,13 @@
               <div class="progress" style="height: 18px">
                 <div id="pbarJoe" class="progress_bar"></div>
               </div>
-
-              <div class="totalVotes"></div>
+              <div class="votesText" id="totalVotesJoe"></div>
             </div>
           </div>
+        </div>
+
+        <div class="text-center">
+          <button id="clear-votes">Clear Votes</button>
         </div>
       </div>
     </div>

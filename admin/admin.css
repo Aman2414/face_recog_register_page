@@ -116,5 +116,6 @@ label {
 }
 
 #loginBtn[type="submit"]:hover {
-  transition: 0.5s;
+  transition: 1s;
+  background: black;
 }
